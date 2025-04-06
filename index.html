@@ -1,42 +1,31 @@
 <!doctype html>
-
 <html>
     <head>
         <meta charset="utf-8">
-
         <title>Blank template</title>
-
-        <!-- Load external CSS styles -->
         <link rel="stylesheet" href="styles.css">
-
     </head>
 
     <body>
-
         <h1>DSTA Blood Donation Drive 2025</h1>
         <h2>Number of people in the queue currently is</h2>
         <h3 id="queueCount"></h3>
         <h4>(Note that there is a 5 mins delay to this queue count)</h4>
 
-    <script>
-        // You can modify this value directly
-        //document.getElementById('queueCount').textContent = '1';
-            <script>
-        // Fetch queue count from another HTML file
-        fetch('queue.html')
-            .then(response => response.text())
-            .then(data => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data, 'text/html');
-                const queueValue = doc.getElementById('queuetime')?.textContent;
-                document.getElementById('queueCount').textContent = queueValue || 'N/A';
-            })
-            .catch(error => {
-                console.error('Error fetching queue data:', error);
-                document.getElementById('queueCount').textContent = 'Error loading queue';
-            });
-    </script>
-        
+        <script>
+            // Fetch data from another HTML file
+            fetch('data.html')
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const dataDocument = parser.parseFromString(html, 'text/html');
+                    const externalValue = dataDocument.getElementById('queueCount').textContent;
+                    document.getElementById('queueCount').textContent = externalValue;
+                })
+                .catch(error => {
+                    console.error('Error fetching queue data:', error);
+                    document.getElementById('queueCount').textContent = '0'; // Fallback value
+                });
+        </script>
     </body>
-
 </html>
