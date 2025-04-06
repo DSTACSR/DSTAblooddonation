@@ -36,6 +36,7 @@ h4 {
   background-position: center;
   
   /* Text & sizing */
+    text-align: center;
   padding: 40px 60px; /* Adjust to control heart size */
   color: white; /* Makes text visible on red heart */
   display: inline-block;
