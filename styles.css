@@ -1,0 +1,21 @@
+/* Place your CSS styles in this file */
+
+h1 {
+    text-align: center;
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: normal;
+    color:red
+}
+h2 {
+    text-align: center;
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: bold;
+    font-size:80px
+}
+
+h3 {
+    text-align: center;
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: bold;
+    font-size:160px
+}
