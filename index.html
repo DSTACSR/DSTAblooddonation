@@ -30,11 +30,13 @@
                 });
         </script>
         <script>
-            window.addEventListener('pageshow', function (event) {
+            // Detect when the page is coming from cache (back-forward cache)
+            window.addEventListener('pageshow', function(event) {
+              // Check if the page is loaded from the cache (e.g., from back/forward navigation)
               if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
-                location.reload();
+                location.reload(); // Reload the page
               }
             });
-      </script>
+        </script>
     </body>
 </html>
