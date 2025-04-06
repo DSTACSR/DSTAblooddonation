@@ -15,6 +15,13 @@
         <span class="refresh-text">Click here to refresh</span><br> (Note: Update might be delayed by 1-5 mins.)
         </h4>
         <script>
+        // Auto-refresh when tab becomes visible again
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                // Small delay to ensure full page load
+                setTimeout(() => location.reload(), 1000); 
+            }
+        });
             // Replace with your Google Sheet ID and range (e.g., "Queue!A1")
             const SHEET_ID = '1ECvdqTCZRHXfeZW26xk5sobI0vrB8RTDwxzZH6PBUUI';
             const RANGE = 'A1'; // Update if your data is in a different cell
