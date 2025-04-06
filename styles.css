@@ -32,17 +32,67 @@ h4 {
     font-size:60px;
     color:grey;
 }
-#queueCount {
-  /* Heart styling */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff0000' d='M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z'/%3E%3C/svg%3E");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  
-  /* Text & sizing */
-    text-align: center;
-  padding: 40px 60px; /* Adjust to control heart size */
-  color: white; /* Makes text visible on red heart */
-  display: inline-block;
-  margin: 20px 0;
+h3 {
+  position: relative;
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: bold;
+  font-size: 200px;
+  z-index: 1;
+}
+
+/* Create the two bumps of the heart */
+h3::before,
+h3::after {
+  content: "";
+  position: absolute;
+  width: 50px;
+  height: 80px;
+  background: red;
+  border-radius: 50px 50px 0 0;
+  z-index: -1;
+}
+
+/* Left bump */
+h3::before {
+  left: calc(50% - 50px);
+  top: calc(50% - 40px);
+  transform: rotate(-45deg) scale(1);
+  transform-origin: 0 100%;
+  animation: pulseBefore 2s infinite;
+}
+
+/* Right bump */
+h3::after {
+  left: calc(50%);
+  top: calc(50% - 40px);
+  transform: rotate(45deg) scale(1);
+  transform-origin: 100% 100%;
+  animation: pulseAfter 2s infinite;
+}
+
+/* Keyframes for left bump pulse */
+@keyframes pulseBefore {
+  0% {
+    transform: rotate(-45deg) scale(1);
+  }
+  50% {
+    transform: rotate(-45deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(-45deg) scale(1);
+  }
+}
+
+/* Keyframes for right bump pulse */
+@keyframes pulseAfter {
+  0% {
+    transform: rotate(45deg) scale(1);
+  }
+  50% {
+    transform: rotate(45deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(45deg) scale(1);
+  }
 }
