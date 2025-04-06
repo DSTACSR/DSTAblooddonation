@@ -28,3 +28,17 @@ h4 {
     font-size:60px;
     color:grey;
 }
+
+#queueCount {
+    background-image: url('heart.png'); /* Or your actual image filename */
+    background-size: contain;          /* Adjust to fit the heart properly */
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 40px;                     /* Creates space around the number */
+    min-width: 200px;                  /* Ensure enough space for the heart */
+    min-height: 200px;
+    display: inline-block;             /* Needed for proper sizing */
+    line-height: 200px;               /* Vertically center the number */
+    font-size: 3em;                   /* Make number bigger */
+    margin: 20px 0;
+}
