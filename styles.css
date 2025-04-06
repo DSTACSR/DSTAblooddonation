@@ -12,23 +12,30 @@ h2 {
     font-weight: normal;
     font-size:80px
 }
-
+h3 {
+  text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: bold;
+  font-size: 200px;
+  margin: 0; /* Remove default h3 margin */
+}
 #queueCount {
   /* Heart styling */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff0000' d='M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z'/%3E%3C/svg%3E");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  padding: 40px 60px;
+  color: white;
   
-  /* Text & sizing */
-  padding: 40px 60px; /* Adjust to control heart size */
-  color: white; /* Makes text visible on red heart */
-  display: inline-block;
+  /* Change to block element for proper centering */
+  display: block;
   margin: 20px auto;
-    text-align:center;
-    font-family: "Source Sans Pro", sans-serif;
+  
+  /* Add these to ensure proper alignment */
+  width: max-content;
+  text-align: center;
 }
-p4 {
     text-align: center;
     font-family: "Source Sans Pro", sans-serif;
     font-weight: normal;
