@@ -22,7 +22,7 @@
                 .then(response => response.text())
                 .then(text => {
                     // Extract the first value from the CSV response
-                    const queueCount = text.trim();
+                    const queueCount = text.trim().replace(/^"|"$/g, '');
                     document.getElementById('queueCount').textContent = queueCount;
                 })
                 .catch(error => {
