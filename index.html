@@ -13,14 +13,17 @@
         <h4>(Note: There is a 5 mins delay to this number.)</h4>
 
         <script>
-            // Fetch data from another HTML file
-            fetch('data.html')
+            // Replace with your Google Sheet ID and range (e.g., "Queue!A1")
+            const SHEET_ID = '1ECvdqTCZRHXfeZW26xk5sobI0vrB8RTDwxzZH6PBUUI';
+            const RANGE = 'A1'; // Update if your data is in a different cell
+            
+            // Fetch data from Google Sheets
+            fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&range=${RANGE}`)
                 .then(response => response.text())
-                .then(html => {
-                    const parser = new DOMParser();
-                    const dataDocument = parser.parseFromString(html, 'text/html');
-                    const externalValue = dataDocument.getElementById('queueCount').textContent;
-                    document.getElementById('queueCount').textContent = externalValue;
+                .then(text => {
+                    // Extract the first value from the CSV response
+                    const queueCount = text.trim();
+                    document.getElementById('queueCount').textContent = queueCount;
                 })
                 .catch(error => {
                     console.error('Error fetching queue data:', error);
