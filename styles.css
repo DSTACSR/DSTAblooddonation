@@ -31,8 +31,8 @@ h2 {
   color: white; /* Makes text visible on red heart */
   display: inline-block;
   margin: 0px 0;
-  font-weight: bold;
-    font-size:200px
+    font-weight: bold;
+    font-size:200px;
 }
 h4 {
     text-align: center;
