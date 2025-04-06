@@ -22,7 +22,21 @@
         <!script src="scripts.js"><!/script>
     <script>
         // You can modify this value directly
-        document.getElementById('queueCount').textContent = '1';
+        //document.getElementById('queueCount').textContent = '1';
+            <script>
+        // Fetch queue count from another HTML file
+        fetch('queue.html')
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const queueValue = doc.getElementById('queuetime')?.textContent;
+                document.getElementById('queueCount').textContent = queueValue || 'N/A';
+            })
+            .catch(error => {
+                console.error('Error fetching queue data:', error);
+                document.getElementById('queueCount').textContent = 'Error loading queue';
+            });
     </script>
         
     </body>
