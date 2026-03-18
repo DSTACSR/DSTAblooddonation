@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>DSTA Blood Donation Drive</title>
-        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="styles.css" id="theme-stylesheet">
     </head>
 
     <body>
@@ -18,26 +18,33 @@
         // Auto-refresh when tab becomes visible again
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) {
-                // Small delay to ensure full page load
                 setTimeout(() => location.reload(), 1000); 
             }
         });
-            // Replace with your Google Sheet ID and range (e.g., "Queue!A1")
-            const SHEET_ID = '1ECvdqTCZRHXfeZW26xk5sobI0vrB8RTDwxzZH6PBUUI';
-            const RANGE = 'A1'; // Update if your data is in a different cell
-            
-            // Fetch data from Google Sheets
-            fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&range=${RANGE}`)
-                .then(response => response.text())
-                .then(text => {
-                    // Extract the first value from the CSV response
-                    const queueCount = text.trim().replace(/^"|"$/g, '');
-                    document.getElementById('queueCount').textContent = queueCount;
-                })
-                .catch(error => {
-                    console.error('Error fetching queue data:', error);
-                    document.getElementById('queueCount').textContent = '0'; // Fallback value
-                });
+
+        const SHEET_ID = '1ECvdqTCZRHXfeZW26xk5sobI0vrB8RTDwxzZH6PBUUI';
+        const RANGE = 'A1';
+
+        fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&range=${RANGE}`)
+            .then(response => response.text())
+            .then(text => {
+                // Clean the value: remove quotes and trim
+                const queueCount = text.trim().replace(/^"|"$/g, '');
+                document.getElementById('queueCount').textContent = queueCount;
+
+                // --- Switch stylesheet if the value is not a number ---
+                const numericValue = parseFloat(queueCount);
+                if (isNaN(numericValue)) {
+                    // Not a number → apply style.css
+                    document.getElementById('theme-stylesheet').href = 'style.css';
+                }
+                // If it's a number, keep styles.css (already set)
+            })
+            .catch(error => {
+                console.error('Error fetching queue data:', error);
+                document.getElementById('queueCount').textContent = '0';
+                // Optionally fallback to a default stylesheet here
+            });
         </script>
     </body>
 </html>
