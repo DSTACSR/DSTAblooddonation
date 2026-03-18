@@ -1,212 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blood Droplet Fill Level (0–10)</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            user-select: none;
-        }
-        body {
-            background: linear-gradient(145deg, #f0f0f0 0%, #d9d9d9 100%);
-            min-height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-        }
-        .card {
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(4px);
-            padding: 2rem 2rem 2.5rem;
-            border-radius: 3rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2), inset 2px 2px 6px rgba(255,255,255,0.8);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        h2 {
-            margin: 0 0 0.5rem 0;
-            font-weight: 400;
-            color: #4a2c2c;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 3px rgba(255,255,255,0.5);
-        }
-        .droplet-container {
-            filter: drop-shadow(0 12px 12px rgba(120,0,0,0.3));
-            margin: 1rem 0;
-        }
-        svg {
-            display: block;
-            width: 240px;
-            height: auto;
-            transition: filter 0.2s;
-        }
-        /* subtle glow on interaction */
-        .slider-wrapper {
-            width: 280px;
-            margin-top: 1.5rem;
-            background: rgba(0,0,0,0.05);
-            padding: 1.2rem 1.5rem;
-            border-radius: 60px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-        }
-        input[type=range] {
-            width: 100%;
-            height: 8px;
-            background: linear-gradient(90deg, #8b0000, #ff4d4d);
-            border-radius: 12px;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 28px;
-            height: 28px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3), 0 0 0 2px #b30000;
-            cursor: pointer;
-            transition: 0.1s;
-            border: 2px solid #990000;
-        }
-        input[type=range]::-webkit-slider-thumb:hover {
-            transform: scale(1.15);
-            background: #ffe6e6;
-        }
-        .value-display {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-top: 1rem;
-            background: #2e1a1a;
-            color: #ffcaca;
-            padding: 0.5rem 2rem;
-            border-radius: 40px;
-            box-shadow: inset 0 -2px 0 #5a3a3a;
-        }
-        .value-display span {
-            color: #ff9f9f;
-            font-weight: 300;
-            margin-right: 0.5rem;
-        }
-        .note {
-            color: #5c3e3e;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-    </style>
-</head>
-<body>
-<div class="card">
-    <h2>🩸 blood droplet · fill level</h2>
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>DSTA Blood Donation Drive</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
 
-    <!-- SVG droplet: outline + clipped fill rectangle -->
-    <div class="droplet-container">
-        <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-            <!-- define the droplet shape as a clip path -->
-            <defs>
-                <clipPath id="droplet-clip" clipPathUnits="objectBoundingBox">
-                    <!-- transform path to relative coordinates (0..1) for clipPath -->
-                    <!-- original path: M 50,5 Q 90,30 50,100 Q 10,30 50,5 -->
-                    <!-- divide by 100 (viewBox width/height ≈ 100,120) but we use objectBoundingBox,
-                         so coordinates become 0..1. we approximate: path will be scaled. -->
-                    <!-- easier: just use the same path inside clipPath with clipPathUnits="userSpaceOnUse" -->
-                    <!-- I'll keep userSpaceOnUse so the numbers match the viewBox -->
-                </clipPath>
-                <!-- simpler: use the same path directly as clipPath, referencing with url -->
-                <clipPath id="droplet-path-clip" clipPathUnits="userSpaceOnUse">
-                    <path d="M 50,5 Q 90,30 50,100 Q 10,30 50,5" />
-                </clipPath>
-            </defs>
-
-            <!-- FILL RECT: clipped by droplet shape, height changes with slider -->
-            <rect id="fillRect" x="0" y="100" width="100" height="0" fill="#c00000" clip-path="url(#droplet-path-clip)" />
-
-            <!-- DROPLET OUTLINE (stroke only) -->
-            <path d="M 50,5 Q 90,30 50,100 Q 10,30 50,5" fill="none" stroke="#2d0a0a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-    </div>
-
-    <!-- slider for x (0 … 10) -->
-    <div class="slider-wrapper">
-        <input type="range" id="xSlider" min="0" max="10" step="1" value="0" list="markers">
-        <datalist id="markers">
-            <option value="0" label="0"></option>
-            <option value="5" label="5"></option>
-            <option value="10" label="10"></option>
-        </datalist>
-    </div>
-
-    <!-- live display of x and fill percent -->
-    <div class="value-display">
-        <span>x =</span> <span id="xValue">0</span> · <span id="fillPercent">0%</span> filled
-    </div>
-    <div class="note">⬆️ drag slider · x = 0 → 0% , x = 10 → 100%</div>
-</div>
-
-<script>
-    (function() {
-        const slider = document.getElementById('xSlider');
-        const xSpan = document.getElementById('xValue');
-        const percentSpan = document.getElementById('fillPercent');
-        const fillRect = document.getElementById('fillRect');
-
-        // viewBox dimensions: y from 0 to 120, but the droplet spans roughly y=5..100.
-        // we want fill to start at bottom (y≈100) and rise upward.
-        // bottom of viewBox is y=120, but the droplet ends at y=100.
-        // to make fill exactly fit the droplet, we set rect to fill from y=100 up to y=0 based on percentage.
-        // bottom of droplet (max y) = 100; top (min y) = 5. but we use the full viewBox height (120) for simplicity,
-        // and clipPath will hide overflow. So we set rect.y = 100 - (fillPercent * 1.0)? wait: we need mapping.
-        // At 0% fill: rect y = 100 (bottom of droplet, height 0)
-        // At 100% fill: rect y = 0 (top of viewBox) and height = 100 (covers whole droplet).
-        // But the droplet doesn't reach y=0, but clipPath hides the part above the path.
-        // So formula: fillPercent = x * 10 (0..100)
-        // rectY = 100 - fillPercent   (since fillPercent in %, 0..100)
-        // rectHeight = fillPercent
-        // BUT careful: at fillPercent = 100, rectY = 0, height = 100 (covers from y=0 to 100)
-        // at fillPercent = 50, rectY = 50, height = 50 (covers from y=50 to 100)
-        // This works because the droplet's bottom is at y=100, top around y=5.
-        // The fill will rise from bottom (y=100) upward, clipped by the droplet.
-
-        function updateFill() {
-            let x = parseInt(slider.value, 10);
-            // safety: ensure number
-            if (isNaN(x)) x = 0;
-            const fillPercent = x * 10;  // 0 to 100
-
-            // update text
-            xSpan.textContent = x;
-            percentSpan.textContent = fillPercent + '%';
-
-            // set rect y and height (in SVG user units)
-            // y from 100 down to 0, height from 0 up to 100
-            const rectY = 100 - fillPercent;   // when fillPercent=100 → y=0; fillPercent=0 → y=100
-            const rectHeight = fillPercent;     // when 100 → height=100; 0 → height=0
-
-            fillRect.setAttribute('y', rectY);
-            fillRect.setAttribute('height', rectHeight);
-        }
-
-        // initial update
-        updateFill();
-
-        // listen to slider changes
-        slider.addEventListener('input', updateFill);
-    })();
-</script>
-
-<!-- 
-    Explanation: 
-    - The droplet shape is defined as an SVG path (a teardrop).
-    - A <clipPath> using that same path allows us to clip any element inside the SVG.
-    - A red rectangle (<rect>) is clipped by the droplet path and placed at the bottom.
-    - The slider (0-10) sets x; JavaScript calculates fill = x*10% and adjusts the rect's y/height.
-    - The outline path is drawn separately with a dark stroke.
-    - Pure CSS styling gives a clean, modern look.
--->
-</body>
+    <body>
+        <h1>DSTA Blood Donation Drive 2026</h1>
+        <h2>Number of people in the queue now is</h2>
+        <h3 id="queueCount"></h3>
+        <br>
+        <h4 onclick="location.reload(); return false;">
+        <span class="refresh-text">Click here to refresh</span><br> (Note: Update might be delayed by 10 to 15 mins.)
+        </h4>
+        <script>
+        // Auto-refresh when tab becomes visible again
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                // Small delay to ensure full page load
+                setTimeout(() => location.reload(), 1000); 
+            }
+        });
+            // Replace with your Google Sheet ID and range (e.g., "Queue!A1")
+            const SHEET_ID = '1ECvdqTCZRHXfeZW26xk5sobI0vrB8RTDwxzZH6PBUUI';
+            const RANGE = 'A1'; // Update if your data is in a different cell
+            
+            // Fetch data from Google Sheets
+            fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&range=${RANGE}`)
+                .then(response => response.text())
+                .then(text => {
+                    // Extract the first value from the CSV response
+                    const queueCount = text.trim().replace(/^"|"$/g, '');
+                    document.getElementById('queueCount').textContent = queueCount;
+                })
+                .catch(error => {
+                    console.error('Error fetching queue data:', error);
+                    document.getElementById('queueCount').textContent = '0'; // Fallback value
+                });
+        </script>
+    </body>
 </html>
